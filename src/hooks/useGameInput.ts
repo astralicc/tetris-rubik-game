@@ -144,7 +144,7 @@ export function useGameInput() {
         softDrop();
         return;
       }
-      if (e.key === 'ArrowUp' || e.code === 'Space') {
+      if (e.code === 'Space') {
         hardDrop();
         return;
       }

@@ -31,7 +31,7 @@ Twist, slice, and orient falling 3D Rubik polycubes to match target tetromino sh
 | `◀` / `A` | Move Left |
 | `▶` / `D` | Move Right |
 | `▼` / `S` | Soft Drop |
-| `▲` / `Space` | Hard Drop Slam |
+| `Space` | Hard Drop Slam |
 
 ### 🧩 WCA Rubik's Cube Layer Twists
 | Key | Layer / Twist | With `Shift` (Prime `'`) |

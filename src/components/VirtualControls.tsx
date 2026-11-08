@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useGameStore } from '../store/gameStore';
 import type { RubikFace } from '../types/game';
-import { ArrowLeft, ArrowRight, ArrowDown, ArrowUp, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, ArrowRight, ArrowDown, RefreshCw, ChevronDown, ChevronUp } from 'lucide-react';
 
 export function VirtualControls() {
   const moveLeft = useGameStore((state) => state.moveLeft);
@@ -117,10 +117,10 @@ export function VirtualControls() {
                 </button>
                 <button
                   onClick={hardDrop}
-                  className="py-2.5 bg-red-900/80 active:bg-red-600 border border-red-500/50 rounded flex items-center justify-center text-white font-bold text-[7px] cursor-pointer"
-                  title="Hard Drop (▲ / Space)"
+                  className="py-2.5 bg-red-900/80 active:bg-red-600 border border-red-500/50 rounded flex items-center justify-center text-white font-bold text-[7px] tracking-wider cursor-pointer"
+                  title="Hard Drop Slam (Space)"
                 >
-                  <ArrowUp size={14} />
+                  SPACE
                 </button>
               </div>
             )}
@@ -237,10 +237,10 @@ export function VirtualControls() {
             </button>
             <button
               onClick={hardDrop}
-              className="py-2 bg-red-900/60 hover:bg-red-800 active:bg-red-600 border border-red-500/40 rounded flex items-center justify-center text-white font-bold cursor-pointer"
-              title="Hard Drop Slam (▲ / Space)"
+              className="py-2 bg-red-900/60 hover:bg-red-800 active:bg-red-600 border border-red-500/40 rounded flex items-center justify-center text-white font-bold text-[7px] tracking-wider cursor-pointer"
+              title="Hard Drop Slam (Space)"
             >
-              <ArrowUp size={12} />
+              SPACE
             </button>
           </div>
         </div>

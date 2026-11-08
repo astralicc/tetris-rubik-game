@@ -242,7 +242,7 @@ export function TutorialModal() {
 
                 <div className="flex items-center justify-between">
                   <span>HARD DROP (SLAM):</span>
-                  <kbd className="px-1.5 py-0.5 bg-red-900 text-white border border-red-400 rounded font-bold animate-pulse">▲ / Space</kbd>
+                  <kbd className="px-1.5 py-0.5 bg-red-900 text-white border border-red-400 rounded font-bold animate-pulse">Space</kbd>
                 </div>
               </div>
 
