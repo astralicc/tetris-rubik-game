@@ -263,13 +263,93 @@ export function checkTargetMatch(
   };
 }
 
+export interface Valid3x3Placement {
+  shape: 'O' | 'T' | 'L' | 'J' | 'S' | 'Z';
+  coords: [number, number][];
+}
+
+/**
+ * Precomputed 36 valid, orthogonally connected classic Tetris tetromino placements (O, T, L, J, S, Z)
+ * that fit within a 3x3 Rubik's cube face grid.
+ */
+export const VALID_3X3_TETROMINO_PLACEMENTS: Valid3x3Placement[] = [
+  { shape: 'L', coords: [[0, 0], [0, 1], [0, 2], [1, 0]] },
+  { shape: 'T', coords: [[0, 0], [0, 1], [0, 2], [1, 1]] },
+  { shape: 'J', coords: [[0, 0], [0, 1], [0, 2], [1, 2]] },
+  { shape: 'O', coords: [[0, 0], [0, 1], [1, 0], [1, 1]] },
+  { shape: 'J', coords: [[0, 0], [0, 1], [1, 0], [2, 0]] },
+  { shape: 'Z', coords: [[0, 0], [0, 1], [1, 1], [1, 2]] },
+  { shape: 'L', coords: [[0, 0], [0, 1], [1, 1], [2, 1]] },
+  { shape: 'J', coords: [[0, 0], [1, 0], [1, 1], [1, 2]] },
+  { shape: 'T', coords: [[0, 0], [1, 0], [1, 1], [2, 0]] },
+  { shape: 'S', coords: [[0, 0], [1, 0], [1, 1], [2, 1]] },
+  { shape: 'L', coords: [[0, 0], [1, 0], [2, 0], [2, 1]] },
+  { shape: 'S', coords: [[0, 1], [0, 2], [1, 0], [1, 1]] },
+  { shape: 'O', coords: [[0, 1], [0, 2], [1, 1], [1, 2]] },
+  { shape: 'J', coords: [[0, 1], [0, 2], [1, 1], [2, 1]] },
+  { shape: 'L', coords: [[0, 1], [0, 2], [1, 2], [2, 2]] },
+  { shape: 'T', coords: [[0, 1], [1, 0], [1, 1], [1, 2]] },
+  { shape: 'Z', coords: [[0, 1], [1, 0], [1, 1], [2, 0]] },
+  { shape: 'T', coords: [[0, 1], [1, 0], [1, 1], [2, 1]] },
+  { shape: 'T', coords: [[0, 1], [1, 1], [1, 2], [2, 1]] },
+  { shape: 'S', coords: [[0, 1], [1, 1], [1, 2], [2, 2]] },
+  { shape: 'J', coords: [[0, 1], [1, 1], [2, 0], [2, 1]] },
+  { shape: 'L', coords: [[0, 1], [1, 1], [2, 1], [2, 2]] },
+  { shape: 'L', coords: [[0, 2], [1, 0], [1, 1], [1, 2]] },
+  { shape: 'Z', coords: [[0, 2], [1, 1], [1, 2], [2, 1]] },
+  { shape: 'T', coords: [[0, 2], [1, 1], [1, 2], [2, 2]] },
+  { shape: 'J', coords: [[0, 2], [1, 2], [2, 1], [2, 2]] },
+  { shape: 'L', coords: [[1, 0], [1, 1], [1, 2], [2, 0]] },
+  { shape: 'T', coords: [[1, 0], [1, 1], [1, 2], [2, 1]] },
+  { shape: 'J', coords: [[1, 0], [1, 1], [1, 2], [2, 2]] },
+  { shape: 'O', coords: [[1, 0], [1, 1], [2, 0], [2, 1]] },
+  { shape: 'Z', coords: [[1, 0], [1, 1], [2, 1], [2, 2]] },
+  { shape: 'J', coords: [[1, 0], [2, 0], [2, 1], [2, 2]] },
+  { shape: 'S', coords: [[1, 1], [1, 2], [2, 0], [2, 1]] },
+  { shape: 'O', coords: [[1, 1], [1, 2], [2, 1], [2, 2]] },
+  { shape: 'T', coords: [[1, 1], [2, 0], [2, 1], [2, 2]] },
+  { shape: 'L', coords: [[1, 2], [2, 0], [2, 1], [2, 2]] },
+];
+
+/**
+ * Validates that all coordinates are orthogonally connected (adjacent by horizontal or vertical edge).
+ */
+export function isOrthogonallyConnected(coords: [number, number][]): boolean {
+  if (coords.length <= 1) return true;
+  const set = new Set(coords.map(([r, c]) => `${r},${c}`));
+  const visited = new Set<string>();
+  const queue: [number, number][] = [coords[0]];
+  visited.add(`${coords[0][0]},${coords[0][1]}`);
+
+  while (queue.length > 0) {
+    const [r, c] = queue.shift()!;
+    const neighbors: [number, number][] = [
+      [r - 1, c],
+      [r + 1, c],
+      [r, c - 1],
+      [r, c + 1],
+    ];
+    for (const [nr, nc] of neighbors) {
+      const key = `${nr},${nc}`;
+      if (set.has(key) && !visited.has(key)) {
+        visited.add(key);
+        queue.push([nr, nc]);
+      }
+    }
+  }
+
+  return visited.size === coords.length;
+}
+
 /**
  * Gets the active blocks that will detach and lock into the 2D grid from the front face.
- * Guaranteed to return a clean Tetris piece (at most 4 blocks for 3x3) so boards stay playable!
+ * Guaranteed to ALWAYS return a 100% valid, contiguous classic Tetris piece (at most 4 blocks for 3x3)
+ * so boards stay playable and never fracture into disconnected or orphan blocks!
  */
 export function getDetachingBlocks(
   frontColors: string[][],
-  matchResult: MatchResult
+  matchResult: MatchResult,
+  targetTetromino?: TetrominoDefinition
 ): { row: number; col: number; color: string }[] {
   const rows = frontColors.length;
   const cols = frontColors[0]?.length || 0;
@@ -287,10 +367,11 @@ export function getDetachingBlocks(
 
   // Small polycube footprints (<= 4 cubies: 1x1x2, 2x2, 2x2x1, L_SHAPE)
   // ALWAYS detach ALL active cells so the piece never fractures or leaves stray blocks!
-  if (activeCells.length <= 4 && activeCells.length > 0) {
+  const is3x3Cube = rows >= 3 && cols >= 3;
+  if (!is3x3Cube && activeCells.length <= 4 && activeCells.length > 0) {
     return activeCells.map((cell) => ({
       ...cell,
-      color: matchResult.isMatch && matchResult.matchedColor ? matchResult.matchedColor : cell.color,
+      color: cell.color,
     }));
   }
 
@@ -303,43 +384,56 @@ export function getDetachingBlocks(
     }));
   }
 
-  // For 3x3: Find dominant color on front face, capped at 4 blocks!
-  const counts: Record<string, [number, number][]> = {};
+  // For 3x3 cube non-match:
+  // ALWAYS select a 100% valid, contiguous classic Tetris tetromino from the face.
+  // Evaluate all 36 valid tetromino placements within 3x3, scoring by color uniformity,
+  // dominant color prevalence, target shape alignment, and bottom gravity bias.
+  const faceCounts: Record<string, number> = {};
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
       const color = frontColors[r][c];
-      if (!color || color === '#111827') continue;
-      if (!counts[color]) counts[color] = [];
-      counts[color].push([r, c]);
+      if (color && color !== '#111827') {
+        faceCounts[color] = (faceCounts[color] || 0) + 1;
+      }
     }
   }
 
-  let dominantColor: string | null = null;
-  let maxCount = 0;
-  for (const [color, list] of Object.entries(counts)) {
-    if (list.length > maxCount) {
-      maxCount = list.length;
-      dominantColor = color;
+  let dominantColor = '';
+  let maxFaceCount = 0;
+  for (const [col, count] of Object.entries(faceCounts)) {
+    if (count > maxFaceCount) {
+      maxFaceCount = count;
+      dominantColor = col;
     }
   }
 
-  if (dominantColor && counts[dominantColor]) {
-    // Cap at 4 blocks to always produce a classic tetromino footprint!
-    const capped = counts[dominantColor].slice(0, 4);
-    return capped.map(([r, c]) => ({
-      row: r,
-      col: c,
-      color: dominantColor!,
-    }));
+  let bestPlacement = VALID_3X3_TETROMINO_PLACEMENTS[0];
+  let bestScore = -Infinity;
+
+  for (const p of VALID_3X3_TETROMINO_PLACEMENTS) {
+    const candCounts: Record<string, number> = {};
+    let rowSum = 0;
+    for (const [r, c] of p.coords) {
+      const color = frontColors[r]?.[c] || '#111827';
+      candCounts[color] = (candCounts[color] || 0) + 1;
+      rowSum += r;
+    }
+    const maxUniformity = Math.max(...Object.values(candCounts));
+    const domInCand = candCounts[dominantColor] || 0;
+    const targetBonus = targetTetromino && targetTetromino.type === p.shape ? 60 : 0;
+    const score = maxUniformity * 100 + domInCand * 25 + targetBonus + rowSum * 2;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestPlacement = p;
+    }
   }
 
-  // Default 4-block piece
-  return [
-    { row: 0, col: 0, color: '#EF4444' },
-    { row: 0, col: 1, color: '#EF4444' },
-    { row: 1, col: 0, color: '#EF4444' },
-    { row: 1, col: 1, color: '#EF4444' },
-  ];
+  return bestPlacement.coords.map(([r, c]) => ({
+    row: r,
+    col: c,
+    color: frontColors[r][c],
+  }));
 }
 
 /**

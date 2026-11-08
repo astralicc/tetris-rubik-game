@@ -62,7 +62,7 @@ Twist, slice, and orient falling 3D Rubik polycubes to match target tetromino sh
 ### 🛠️ Arcade Cockpit Controls
 | Key | Action |
 | --- | --- |
-| `Tab` / `0` / `` ` `` | Toggle CPU Bot Autoplay Mode |
+| `Tab` / `0` / `` ` `` | Toggle Bot Autoplay Mode |
 | `H` / `?` | Open How to Play Tutorial Manual |
 | `P` / `Esc` | Pause / Resume Game |
 | `Enter` | Start / Restart Game |

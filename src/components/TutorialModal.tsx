@@ -68,7 +68,7 @@ export function TutorialModal() {
         <div className="flex items-center justify-between pb-2 border-b border-cyan-500/30">
           <div className="flex items-center gap-1.5 text-yellow-400 text-[9px] tracking-widest font-bold">
             <HelpCircle size={14} className="text-yellow-400 animate-pulse" />
-            <span>HOW TO PLAY &bull; PILOT MANUAL</span>
+            <span>HOW TO PLAY</span>
           </div>
           <button
             onClick={closeTutorial}
@@ -87,11 +87,10 @@ export function TutorialModal() {
               <button
                 key={idx}
                 onClick={() => setStep(idx)}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  step === idx
-                    ? 'bg-yellow-400 scale-125 shadow-[0_0_6px_rgba(250,204,21,0.9)]'
-                    : 'bg-slate-700 hover:bg-slate-500'
-                }`}
+                className={`w-2 h-2 rounded-full transition-all ${step === idx
+                  ? 'bg-yellow-400 scale-125 shadow-[0_0_6px_rgba(250,204,21,0.9)]'
+                  : 'bg-slate-700 hover:bg-slate-500'
+                  }`}
                 aria-label={`Jump to step ${idx + 1}`}
               />
             ))}
@@ -109,7 +108,7 @@ export function TutorialModal() {
               <p className="text-[8px] text-slate-300 leading-relaxed">
                 Welcome to <strong className="text-white">Rubik's Tetris</strong>! Instead of ordinary flat tetrominoes, you control a falling <span className="text-cyan-300 font-bold">3D Rubik's Polycube</span>!
               </p>
-              
+
               {/* Visual Diagram: 3D Front Face -> 2D Grid Stamping */}
               <div className="bg-black/60 p-2.5 rounded border border-white/10 flex items-center justify-around gap-2 text-center">
                 <div className="flex flex-col items-center gap-1">
@@ -257,7 +256,7 @@ export function TutorialModal() {
             <div className="space-y-2.5">
               <div className="text-sm font-bold text-yellow-400 flex items-center gap-1.5">
                 <Bot size={14} className="text-cyan-400" />
-                <span>PRO TIPS & CPU BOT AUTOPLAY</span>
+                <span>PRO TIPS & BOT AUTOPLAY</span>
               </div>
 
               <div className="space-y-1.5 text-[7.5px] text-slate-300">
@@ -273,7 +272,7 @@ export function TutorialModal() {
 
                 <div className="flex items-start gap-1.5 bg-cyan-950/40 p-1.5 rounded border border-cyan-400/40">
                   <span className="text-cyan-300 font-bold">3.</span>
-                  <span><strong className="text-cyan-300">Watch the CPU Bot Play:</strong> Press <kbd className="px-1 bg-slate-800 text-white rounded">Tab</kbd>, <kbd className="px-1 bg-slate-800 text-white rounded">0</kbd>, or click <strong className="text-yellow-400">[BOT]</strong> to see the AI solve and play autonomously!</span>
+                  <span><strong className="text-cyan-300">Watch the Bot Play:</strong> Press <kbd className="px-1 bg-slate-800 text-white rounded">Tab</kbd>, <kbd className="px-1 bg-slate-800 text-white rounded">0</kbd>, or click <strong className="text-yellow-400">[BOT]</strong> to see the AI solve and play autonomously!</span>
                 </div>
               </div>
             </div>
@@ -285,11 +284,10 @@ export function TutorialModal() {
           <button
             onClick={() => setStep((s) => Math.max(0, s - 1))}
             disabled={step === 0}
-            className={`px-2.5 py-1.5 rounded border transition-colors flex items-center gap-1 ${
-              step === 0
-                ? 'opacity-30 border-slate-700 text-slate-500 cursor-not-allowed'
-                : 'bg-slate-800 hover:bg-slate-700 border-white/30 text-white'
-            }`}
+            className={`px-2.5 py-1.5 rounded border transition-colors flex items-center gap-1 ${step === 0
+              ? 'opacity-30 border-slate-700 text-slate-500 cursor-not-allowed'
+              : 'bg-slate-800 hover:bg-slate-700 border-white/30 text-white'
+              }`}
           >
             <ChevronLeft size={12} /> PREV
           </button>

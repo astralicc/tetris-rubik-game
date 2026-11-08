@@ -32,9 +32,9 @@ export function ArcadeHeader() {
       </div>
 
       {/* Center Arcade Coin Flasher */}
-      <div className="text-[7px] text-yellow-400/90 font-bold animate-pulse hidden md:block">
+      {/* <div className="text-[7px] text-yellow-400/90 font-bold animate-pulse hidden md:block">
         INSERT 1 COIN &bull; CREDIT 01
-      </div>
+      </div> */}
 
       {/* Right Controls Tray */}
       <div className="flex items-center gap-1.5 text-white/80">
@@ -49,12 +49,11 @@ export function ArcadeHeader() {
 
         <button
           onClick={toggleBotMode}
-          className={`px-1.5 py-0.5 rounded border flex items-center gap-1 transition-all cursor-pointer ${
-            isBotMode
+          className={`px-1.5 py-0.5 rounded border flex items-center gap-1 transition-all cursor-pointer ${isBotMode
               ? 'bg-cyan-500/20 text-cyan-300 border-cyan-400 shadow-[0_0_8px_rgba(6,182,212,0.6)] font-bold animate-pulse'
               : 'hover:text-cyan-400 hover:bg-white/10 text-white/80 border-white/20'
-          }`}
-          title="Toggle CPU Bot Autoplay (Tab / 0)"
+            }`}
+          title="Toggle Bot Autoplay (Tab / 0)"
         >
           <Bot size={12} />
           <span className="text-[7px]">{isBotMode ? 'BOT ON' : 'BOT'}</span>

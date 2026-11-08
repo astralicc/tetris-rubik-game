@@ -106,7 +106,7 @@ function evaluatePlacement(
 ): { bestX: number; bestScore: number; isMatch: boolean } {
   const faceColors = extractBottomFaceColors(cubies);
   const match = checkTargetMatch(faceColors, target);
-  const blocks = getDetachingBlocks(faceColors, match);
+  const blocks = getDetachingBlocks(faceColors, match, target);
 
   if (blocks.length === 0) return { bestX: 3, bestScore: -9999, isMatch: false };
 

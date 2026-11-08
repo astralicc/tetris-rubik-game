@@ -285,10 +285,11 @@ export const useGameStore = create<GameState>((set, get) => {
         cubies,
         bottomFaceColors,
         matchResult,
+        targetTetromino,
       } = get();
       if (gameStatus !== 'PLAYING' || isDetaching || isHardDropping || isTwisting || isRotatingGlobal) return;
       const bounds = getShapeBounds(cubies);
-      const blocks = getDetachingBlocks(bottomFaceColors, matchResult);
+      const blocks = getDetachingBlocks(bottomFaceColors, matchResult, targetTetromino);
       const maxBlockCol = blocks.length > 0 ? Math.max(...blocks.map((b) => b.col)) : bounds.width - 1;
       const pieceWidth = Math.max(bounds.width, maxBlockCol + 1);
       if (cubePosition.x < GRID_COLS - pieceWidth) {
@@ -304,6 +305,7 @@ export const useGameStore = create<GameState>((set, get) => {
         grid,
         bottomFaceColors,
         matchResult,
+        targetTetromino,
         isDetaching,
         isHardDropping,
         isTwisting,
@@ -311,7 +313,7 @@ export const useGameStore = create<GameState>((set, get) => {
       } = get();
       if (gameStatus !== 'PLAYING' || isDetaching || isHardDropping || isTwisting || isRotatingGlobal) return;
 
-      const blocks = getDetachingBlocks(bottomFaceColors, matchResult);
+      const blocks = getDetachingBlocks(bottomFaceColors, matchResult, targetTetromino);
       const landingY = calculateLandingY(grid, cubePosition.x, cubePosition.y, blocks);
 
       if (cubePosition.y < landingY) {
@@ -332,6 +334,7 @@ export const useGameStore = create<GameState>((set, get) => {
         grid,
         bottomFaceColors,
         matchResult,
+        targetTetromino,
         isDetaching,
         isHardDropping,
         isTwisting,
@@ -339,7 +342,7 @@ export const useGameStore = create<GameState>((set, get) => {
       } = get();
       if (gameStatus !== 'PLAYING' || isDetaching || isHardDropping || isTwisting || isRotatingGlobal) return;
 
-      const blocks = getDetachingBlocks(bottomFaceColors, matchResult);
+      const blocks = getDetachingBlocks(bottomFaceColors, matchResult, targetTetromino);
       const landingY = calculateLandingY(grid, cubePosition.x, cubePosition.y, blocks);
       const dropDistance = Math.max(0, Math.floor(landingY - cubePosition.y));
 
@@ -400,6 +403,7 @@ export const useGameStore = create<GameState>((set, get) => {
         grid,
         bottomFaceColors,
         matchResult,
+        targetTetromino,
         isDetaching,
         isHardDropping,
         isTwisting,
@@ -418,7 +422,7 @@ export const useGameStore = create<GameState>((set, get) => {
       const dropSpeed = 0.8 + level * 0.25; // rows per second
       const nextY = cubePosition.y + dropSpeed * (deltaTime / 1000);
 
-      const blocks = getDetachingBlocks(bottomFaceColors, matchResult);
+      const blocks = getDetachingBlocks(bottomFaceColors, matchResult, targetTetromino);
       const landingY = calculateLandingY(grid, cubePosition.x, cubePosition.y, blocks);
 
       if (nextY >= landingY) {
@@ -590,6 +594,7 @@ export const useGameStore = create<GameState>((set, get) => {
         cubePosition,
         bottomFaceColors,
         matchResult,
+        targetTetromino,
         score,
         highScore,
         level,
@@ -601,7 +606,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
       sound.playDrop();
 
-      const blocks = getDetachingBlocks(bottomFaceColors, matchResult);
+      const blocks = getDetachingBlocks(bottomFaceColors, matchResult, targetTetromino);
       const maxCol = blocks.length > 0 ? Math.max(...blocks.map((b) => b.col)) : 0;
       const minCol = blocks.length > 0 ? Math.min(...blocks.map((b) => b.col)) : 0;
       const safeCubeX = Math.max(-minCol, Math.min(GRID_COLS - 1 - maxCol, cubePosition.x));
@@ -651,7 +656,7 @@ export const useGameStore = create<GameState>((set, get) => {
       const nextBounds = getShapeBounds(nextScrambledCubies);
       const startX = Math.max(0, Math.min(GRID_COLS - nextBounds.width, Math.floor((GRID_COLS - nextBounds.width) / 2)));
 
-      const spawnBlocks = getDetachingBlocks(nextBottomColors, nextMatch);
+      const spawnBlocks = getDetachingBlocks(nextBottomColors, nextMatch, spawnedTarget);
       const spawnLandingY = calculateLandingY(clearResult.newGrid, startX, 0, spawnBlocks);
       const isGameOver = spawnLandingY <= 0;
 

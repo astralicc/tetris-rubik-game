@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { useGameStore } from '../store/gameStore';
 import { SHAPES_META } from '../utils/rubik';
+import { getDetachingBlocks } from '../utils/tetris';
 
 export function HudPanel() {
   const score = useGameStore((state) => state.score);
@@ -12,6 +13,13 @@ export function HudPanel() {
   const targetTetromino = useGameStore((state) => state.targetTetromino);
   const frontFaceColors = useGameStore((state) => state.frontFaceColors);
   const matchResult = useGameStore((state) => state.matchResult);
+
+  // Compute active detaching tetromino
+  const detachingBlocks = useMemo(() => {
+    return getDetachingBlocks(frontFaceColors, matchResult, targetTetromino);
+  }, [frontFaceColors, matchResult, targetTetromino]);
+
+  const isLargeFace = frontFaceColors.length > 2 || (frontFaceColors[0]?.length || 0) > 2;
 
   // Center target shape in a clean 3x3 box
   const targetPreview3x3 = useMemo(() => {
@@ -134,6 +142,10 @@ export function HudPanel() {
                   const isPartOfMatch = matchResult.matchedIndices.some(
                     ([mr, mc]) => mr === r && mc === c
                   );
+                  const isDetaching = detachingBlocks.some(
+                    (b) => b.row === r && b.col === c
+                  );
+                  const isDimmed = isLargeFace && !matchResult.isMatch && !isDetaching;
 
                   return (
                     <div
@@ -141,12 +153,16 @@ export function HudPanel() {
                       className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-[1px] transition-all relative ${
                         isPartOfMatch
                           ? 'ring-1 ring-yellow-400 scale-105 z-10 animate-pulse'
+                          : isDetaching && isLargeFace
+                          ? 'ring-1 ring-cyan-400/90 scale-105 z-10'
                           : ''
-                      }`}
+                      } ${isDimmed ? 'opacity-30 brightness-75' : 'opacity-100'}`}
                       style={{
                         backgroundColor: color,
                         boxShadow: isPartOfMatch
                           ? '0 0 6px rgba(250,204,21,0.9)'
+                          : isDetaching && isLargeFace
+                          ? '0 0 4px rgba(6,182,212,0.6)'
                           : 'inset 1px 1px 0 rgba(255,255,255,0.3)',
                       }}
                     />
@@ -294,6 +310,10 @@ export function HudPanel() {
                 const isPartOfMatch = matchResult.matchedIndices.some(
                   ([mr, mc]) => mr === r && mc === c
                 );
+                const isDetaching = detachingBlocks.some(
+                  (b) => b.row === r && b.col === c
+                );
+                const isDimmed = isLargeFace && !matchResult.isMatch && !isDetaching;
 
                 return (
                   <div
@@ -301,12 +321,16 @@ export function HudPanel() {
                     className={`w-3.5 h-3.5 rounded-[1px] transition-all relative ${
                       isPartOfMatch
                         ? 'ring-2 ring-yellow-400 scale-105 z-10 animate-pulse'
+                        : isDetaching && isLargeFace
+                        ? 'ring-1 ring-cyan-400/90 scale-105 z-10'
                         : ''
-                    }`}
+                    } ${isDimmed ? 'opacity-30 brightness-75' : 'opacity-100'}`}
                     style={{
                       backgroundColor: color,
                       boxShadow: isPartOfMatch
                         ? '0 0 8px rgba(250,204,21,0.9)'
+                        : isDetaching && isLargeFace
+                        ? '0 0 6px rgba(6,182,212,0.6)'
                         : 'inset 1px 1px 0 rgba(255,255,255,0.3)',
                     }}
                   />

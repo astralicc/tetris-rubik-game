@@ -63,7 +63,7 @@ export function ArcadeCabinet() {
               {/* Suspended 3D Rubik's Polycube Falling Overlay (z-10) */}
               {gameStatus === 'PLAYING' && <RubikCanvas />}
 
-              {/* CPU Bot Autoplay Retro Indicator (z-15) */}
+              {/* Bot Autoplay Retro Indicator (z-15) */}
               {isBotMode && (
                 <div className="absolute top-2 left-2 z-15 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/85 border border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.6)] pointer-events-none">
                   <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
@@ -168,13 +168,6 @@ export function ArcadeCabinet() {
 
         {/* Cabinet Bottom Detail: Speaker Grills & Coin Slot */}
         <div className="w-full mt-2.5 pt-1.5 border-t border-slate-700/60 flex items-center justify-between text-[6.5px] text-slate-500 px-1">
-          <span>PORTRAIT ARCADE COCKPIT</span>
-          <div className="flex gap-1">
-            <div className="w-1.5 h-1 bg-slate-600 rounded-sm" />
-            <div className="w-1.5 h-1 bg-slate-600 rounded-sm" />
-            <div className="w-1.5 h-1 bg-slate-600 rounded-sm" />
-          </div>
-          <span>FLAT 2D + 3D R3F</span>
         </div>
       </div>
     </div>

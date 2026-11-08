@@ -22,13 +22,14 @@ export function FlatGrid() {
   const cubePosition = useGameStore((state) => state.cubePosition);
   const frontFaceColors = useGameStore((state) => state.frontFaceColors);
   const matchResult = useGameStore((state) => state.matchResult);
+  const targetTetromino = useGameStore((state) => state.targetTetromino);
   const lastClearedRows = useGameStore((state) => state.lastClearedRows);
   const gameStatus = useGameStore((state) => state.gameStatus);
 
   // Compute ghost landing projection from active front face
   const detachingBlocks = useMemo(() => {
-    return getDetachingBlocks(frontFaceColors, matchResult);
-  }, [frontFaceColors, matchResult]);
+    return getDetachingBlocks(frontFaceColors, matchResult, targetTetromino);
+  }, [frontFaceColors, matchResult, targetTetromino]);
 
   const safeCubeX = useMemo(() => {
     if (detachingBlocks.length === 0) return cubePosition.x;

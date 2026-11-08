@@ -110,7 +110,7 @@ export function useBotPlayer() {
 
       // 6. Phase 2: Lateral Positioning (X column alignment)
       const bounds = getShapeBounds(state.cubies);
-      const blocks = getDetachingBlocks(state.bottomFaceColors, state.matchResult);
+      const blocks = getDetachingBlocks(state.bottomFaceColors, state.matchResult, state.targetTetromino);
       const maxBlockCol = blocks.length > 0 ? Math.max(...blocks.map((b) => b.col)) : bounds.width - 1;
       const pieceWidth = Math.max(bounds.width, maxBlockCol + 1);
       const safeTargetX = Math.max(0, Math.min(GRID_COLS - pieceWidth, currentPlan.targetX));
