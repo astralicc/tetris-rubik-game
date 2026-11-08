@@ -10,6 +10,7 @@ import {
   RotateCw,
   Sparkles,
   HelpCircle,
+  ExternalLink,
 } from 'lucide-react';
 
 export function TutorialModal() {
@@ -307,6 +308,21 @@ export function TutorialModal() {
               <Play size={12} /> START PLAYING
             </button>
           )}
+        </div>
+
+        {/* Game Idea & Attribution Credit */}
+        <div className="mt-2.5 pt-2 border-t border-white/10 text-center">
+          <a
+            href="https://www.instagram.com/lookahead.tv/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-1 text-[7px] text-slate-400 hover:text-cyan-300 transition-colors tracking-wide group"
+          >
+            <span>game idea:</span>
+            <span className="text-yellow-400 group-hover:underline font-bold">@lookahead.tv</span>
+            <span>on instagram</span>
+            <ExternalLink size={9} className="opacity-60 group-hover:opacity-100" />
+          </a>
         </div>
       </div>
     </div>

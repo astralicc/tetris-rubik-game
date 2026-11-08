@@ -112,5 +112,10 @@ npx tsc --noEmit
 
 ---
 
+## 🙏 Credits & Attribution
+- **Game Idea:** [@lookahead.tv](https://www.instagram.com/lookahead.tv/) on Instagram
+
+---
+
 ## 📄 License
 MIT
