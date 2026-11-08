@@ -36,7 +36,7 @@ import {
   getRandomTargetForShape,
 } from '../utils/tetris';
 import type { MatchResult } from '../utils/tetris';
-import confetti from 'canvas-confetti';
+import { fireLineClearConfetti, resetConfetti } from '../utils/confettiHelper';
 
 interface SliceGlowData {
   axis: RotationAxis;
@@ -205,6 +205,7 @@ export const useGameStore = create<GameState>((set, get) => {
     },
 
     startGame: () => {
+      resetConfetti();
       if (lineClearTimer) {
         clearTimeout(lineClearTimer);
         lineClearTimer = null;
@@ -634,15 +635,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
       if (clearResult.linesCleared > 0) {
         sound.playLineClear();
-        try {
-          confetti({
-            particleCount: clearResult.linesCleared * 35,
-            spread: 70,
-            origin: { y: 0.7 },
-          });
-        } catch {
-          // graceful fallback
-        }
+        fireLineClearConfetti(clearResult.linesCleared);
       }
 
       // Spawn next piece
@@ -664,6 +657,7 @@ export const useGameStore = create<GameState>((set, get) => {
 
       if (isGameOver) {
         sound.playGameOver();
+        resetConfetti();
       }
 
       // If full lines were cleared, display white effect and disappear after 1.5 seconds
