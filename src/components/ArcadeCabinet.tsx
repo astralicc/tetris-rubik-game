@@ -68,7 +68,7 @@ export function ArcadeCabinet() {
                 <div className="absolute top-2 left-2 z-15 flex items-center gap-1.5 px-2 py-0.5 rounded bg-black/85 border border-cyan-400 shadow-[0_0_10px_rgba(6,182,212,0.6)] pointer-events-none">
                   <div className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
                   <span className="text-[7px] font-bold text-cyan-300 tracking-widest uppercase">
-                    CPU AUTOPLAY
+                    BOT AUTOPLAY
                   </span>
                 </div>
               )}
